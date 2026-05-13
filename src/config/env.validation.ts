@@ -7,7 +7,7 @@ interface EnvVars {
     DATABASE_URL: string;
 }
 
-const envsSchema = joi.object({
+export const envsSchema = joi.object({
     PORT: joi.number().default(3000),
     NODE_ENV: joi.string().valid('production', 'development', 'test').required(),
     DATABASE_URL: joi.string().required(),
