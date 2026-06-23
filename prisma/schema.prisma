@@ -1,0 +1,161 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Type {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum LimitPeriod {
+  MONTHLY
+  DAILY
+  WEEKLY
+}
+
+model Plan {
+  id                String      @id @default(uuid())
+  type              Type
+  notificationLimit Int
+  limitPeriod       LimitPeriod
+  tenant            Tenant[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tenant {
+  id       String  @id @default(uuid())
+  name     String
+  email    String  @unique
+  password String
+  isActive Boolean @default(true)
+  plan     Plan    @relation(fields: [planId], references: [id])
+  planId   String
+
+  subscriber   Subscriber[]
+  template     Template[]
+  webhook      Webhook[]
+  notification Notification[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Subscriber {
+  id         String @id @default(uuid())
+  externalId String
+
+  firstName    String?
+  lastName     String?
+  email        String?
+  phone        String?
+  metadata     Json?
+  notification Notification[]
+
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
+  tenantId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, externalId])
+}
+
+enum Channel {
+  EMAIL
+  WEBHOOK
+  IN_APP
+}
+
+model Template {
+  id           String         @id @default(uuid())
+  name         String
+  channel      Channel
+  subject      String?
+  body         String
+  variables    String[]
+  active       Boolean        @default(true)
+  notification Notification[]
+
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
+  tenantId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, tenantId])
+}
+
+enum NotificationStatus {
+  PENDING
+  DELIVERED
+  FAILED
+  CANCELED
+  QUEUED
+  SCHEDULED
+}
+
+model Notification {
+  id      String             @id @default(uuid())
+  status  NotificationStatus
+  channel Channel
+  payload Json // it has variable values
+
+  template   Template @relation(fields: [templateId], references: [id])
+  templateId String
+
+  subscriber   Subscriber @relation(fields: [subscriberId], references: [id])
+  subscriberId String
+
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
+  tenantId String
+
+  deliveryAttempt DeliveryAttempt[]
+
+  scheduledFor DateTime?
+  processedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+enum DeliveryStatus {
+  ATTEMPTING
+  SUCCESS
+  FAILED
+}
+
+model DeliveryAttempt {
+  id           String         @id @default(uuid())
+  status       DeliveryStatus
+  provider     String
+  attempt      Int
+  errorMessage String?
+
+  notification   Notification @relation(fields: [notificationId], references: [id])
+  notificationId String
+
+  sentAt    DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Webhook {
+  id     String   @id @default(uuid())
+  url    String
+  secret String //for signature verification
+  events String[] //list of events trigger this webhook (e.g: "notification.delivered", "notification.failed")
+  active Boolean  @default(true)
+
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
+  tenantId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
