@@ -1,6 +1,6 @@
 import {ITenantRepository} from "../../domain/tenant.repository";
 import { Tenant } from '../../domain/tenant.entity'
-import {PasswordHasher} from "../services/password-hasher";
+import {IPasswordHasherRepository} from "../services/password/password-hasher.repository";
 
 interface ICreateTenantDto {
     name: string,
@@ -12,7 +12,7 @@ interface ICreateTenantDto {
 export class CreateTenantUseCase {
     constructor(
         private readonly tenantRepository: ITenantRepository,
-        private readonly passwordHasher: PasswordHasher
+        private readonly passwordHasher: IPasswordHasherRepository
     ) {}
 
     async execute(dto: ICreateTenantDto) {

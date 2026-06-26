@@ -24,7 +24,8 @@ model Plan {
   type              Type
   notificationLimit Int
   limitPeriod       LimitPeriod
-  tenant            Tenant[]
+
+  tenant Tenant[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
