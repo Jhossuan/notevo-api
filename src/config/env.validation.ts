@@ -5,12 +5,14 @@ interface EnvVars {
     PORT: number;
     NODE_ENV: string;
     DATABASE_URL: string;
+    VERSION: string;
 }
 
 export const envsSchema = joi.object({
     PORT: joi.number().default(3000),
     NODE_ENV: joi.string().valid('production', 'development', 'test').required(),
     DATABASE_URL: joi.string().required(),
+    VERSION: joi.string(),
 }).unknown(true)
 
 const { error, value } = envsSchema.validate(process.env);
@@ -25,4 +27,5 @@ export const envValidation = {
     port: envVars.PORT,
     nodeEnv: envVars.NODE_ENV,
     databaseUrl: envVars.DATABASE_URL,
+    version: envVars.VERSION,
 }

@@ -3,7 +3,9 @@ import {CreateTenantUseCase} from "../application/use-cases/create-tenant.use-ca
 import {CreateTenantDto} from "./dto/create-tenant.dto";
 import {IControllerResponse} from "../../../shared/interfaces/response.interface";
 import {Tenant} from "../domain/tenant.entity";
+import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 
+@ApiTags('Tenants')
 @Controller("tenant")
 export class TenantController {
 
@@ -12,6 +14,10 @@ export class TenantController {
     ) {}
 
     @Post()
+    @ApiOperation({ summary: "Create a new tenant" })
+    @ApiResponse({ status: HttpStatus.CREATED, description: 'Tenant created successfully' })
+    @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Validation error' })
+    @ApiResponse({ status: HttpStatus.CONFLICT, description: 'Email already exists' })
     async createTenant(@Body() createTenantDto: CreateTenantDto): Promise<IControllerResponse<Tenant>>{
         const tenant = await this.createTenantUseCase.execute(createTenantDto);
         return {
