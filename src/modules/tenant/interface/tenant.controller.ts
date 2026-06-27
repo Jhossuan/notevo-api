@@ -11,7 +11,7 @@ export class TenantController {
         private readonly createTenantUseCase: CreateTenantUseCase,
     ) {}
 
-    @Post('create')
+    @Post()
     async createTenant(@Body() createTenantDto: CreateTenantDto): Promise<IControllerResponse<Tenant>>{
         const tenant = await this.createTenantUseCase.execute(createTenantDto);
         return {

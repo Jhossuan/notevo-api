@@ -4,7 +4,7 @@ import {PrismaModule} from "../../../shared/infrastructure/persistence/prisma.mo
 import {TENANT_REPOSITORY_TOKEN} from "../domain/tenant.tokens";
 import {PrismaTenantRepository} from "../infrastructure/repositories/prisma-tenant.repository";
 import {PASSWORD_HASHER_TOKEN} from "../application/services/password/password-hasher.tokens";
-import {BcryptPasswordHasher} from "../application/services/password/bcrypt-password-hasher";
+import {BcryptPasswordRepository} from "../infrastructure/repositories/bcrypt-password.repository";
 import {CreateTenantUseCase} from "../application/use-cases/create-tenant.use-case";
 import {ITenantRepository} from "../domain/tenant.repository";
 import {IPasswordHasherRepository} from "../application/services/password/password-hasher.repository";
@@ -18,7 +18,7 @@ import {IPasswordHasherRepository} from "../application/services/password/passwo
         },
         {
             provide: PASSWORD_HASHER_TOKEN,
-            useClass: BcryptPasswordHasher,
+            useClass: BcryptPasswordRepository,
         },
         {
             provide: CreateTenantUseCase,
