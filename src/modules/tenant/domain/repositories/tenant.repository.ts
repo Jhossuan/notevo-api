@@ -1,5 +1,5 @@
-import {Tenant} from "./tenant.entity";
-import {IPaginationMetadata} from "../../../shared/interfaces/pagination.interface";
+import {Tenant} from "../entities/tenant.entity";
+import {IPaginationMetadata} from "../../../../shared/interfaces/pagination.interface";
 
 export interface ITenantRepository {
     create(tenant: Tenant): Promise<Tenant>;

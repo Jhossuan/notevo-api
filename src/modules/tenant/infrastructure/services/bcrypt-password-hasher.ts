@@ -3,7 +3,7 @@ import * as bcrypt from "bcrypt";
 import {IPasswordHasherRepository} from "../../application/services/password/password-hasher.repository";
 
 @Injectable()
-export class BcryptPasswordRepository implements IPasswordHasherRepository {
+export class BcryptPasswordHasher implements IPasswordHasherRepository {
 
     async hash(password: string): Promise<string> {
         return bcrypt.hash(password, 12);

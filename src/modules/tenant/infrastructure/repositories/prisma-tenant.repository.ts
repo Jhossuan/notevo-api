@@ -1,6 +1,6 @@
-import {ITenantRepository} from "../../domain/tenant.repository";
+import {ITenantRepository} from "../../domain/repositories/tenant.repository";
 import {PrismaService} from "../../../../shared/infrastructure/persistence/prisma.service";
-import {Tenant} from "../../domain/tenant.entity";
+import {Tenant} from "../../domain/entities/tenant.entity";
 import {Injectable} from "@nestjs/common";
 import {IPaginationMetadata} from "../../../../shared/interfaces/pagination.interface";
 

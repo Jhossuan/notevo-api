@@ -1,4 +1,4 @@
-import {BaseEntity} from "../../../shared/domain/base.entity";
+import {BaseEntity} from "../../../../shared/domain/base.entity";
 import {v4 as uuidv4} from "uuid"
 
 interface ICreateTenantProps {
@@ -27,6 +27,18 @@ export class Tenant extends BaseEntity {
         updatedAt: Date,
     ) {
         super(id, createdAt, updatedAt)
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            email: this.email,
+            isActive: this.isActive,
+            planId: this.planId,
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt,
+        }
     }
 
     public static create(props: ICreateTenantProps){
