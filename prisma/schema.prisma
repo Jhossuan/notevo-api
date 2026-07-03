@@ -31,6 +31,26 @@ model Plan {
   updatedAt DateTime @updatedAt
 }
 
+enum ApiKeyScope {
+  FULL_ACCESS
+  READ_ONLY
+}
+
+model ApiKey {
+  id        String      @id @default(uuid())
+  hashedKey String      @unique
+  prefix    String
+  name      String
+  scope     ApiKeyScope @default(FULL_ACCESS)
+  revokedAt DateTime?
+
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
+  tenantId String
+
+  createdAt  DateTime  @default(now())
+  lastUsedAt DateTime?
+}
+
 model Tenant {
   id       String  @id @default(uuid())
   name     String
@@ -44,6 +64,7 @@ model Tenant {
   template     Template[]
   webhook      Webhook[]
   notification Notification[]
+  apiKey       ApiKey[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
