@@ -11,9 +11,8 @@ import {IPasswordHasherRepository} from "../application/services/password/passwo
 import {IApiKeyGenerator} from "../application/services/api-key/api-key-generator";
 import {IApiKeyRepository} from "../domain/repositories/api-key.repository";
 import {API_KEY_GENERATOR_TOKEN} from "../application/services/api-key/api-key-generator.tokens";
-import {CryptoApiKeyGenerator} from "../infrastructure/services/crypto-api-key-generator";
 import {API_KEY_REPOSITORY_TOKEN} from "../domain/tokens/api-key.token";
-import {PrismaApiKeyRepository} from "../infrastructure/repositories/prisma-api-key.repository";
+import {FindTenantsUseCase} from "../application/use-cases/find-tenants.use-case";
 
 @Module({
     imports: [PrismaModule],
@@ -27,14 +26,6 @@ import {PrismaApiKeyRepository} from "../infrastructure/repositories/prisma-api-
             useClass: BcryptPasswordHasher,
         },
         {
-            provide: API_KEY_GENERATOR_TOKEN,
-            useClass: CryptoApiKeyGenerator
-        },
-        {
-            provide: API_KEY_REPOSITORY_TOKEN,
-            useClass: PrismaApiKeyRepository
-        },
-        {
             provide: CreateTenantUseCase,
             useFactory: (
                 tenantRepository: ITenantRepository,
@@ -43,6 +34,13 @@ import {PrismaApiKeyRepository} from "../infrastructure/repositories/prisma-api-
                 apiKeyRepository: IApiKeyRepository
             ) => new CreateTenantUseCase(tenantRepository, passwordHasher, apiKeyGenerator, apiKeyRepository),
             inject: [TENANT_REPOSITORY_TOKEN, PASSWORD_HASHER_TOKEN, API_KEY_GENERATOR_TOKEN, API_KEY_REPOSITORY_TOKEN],
+        },
+        {
+            provide: FindTenantsUseCase,
+            useFactory: (
+                tenantRepository: ITenantRepository,
+            ) => new FindTenantsUseCase(tenantRepository),
+            inject: [TENANT_REPOSITORY_TOKEN]
         }
     ],
     controllers: [TenantController],

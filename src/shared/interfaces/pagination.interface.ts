@@ -3,3 +3,8 @@ export interface IPaginationMetadata {
     lastPage: number;
     totalDocuments: number;
 }
+
+export interface IPagination {
+    page: number;
+    limit: number;
+}

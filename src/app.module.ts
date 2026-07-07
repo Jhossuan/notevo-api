@@ -3,6 +3,7 @@ import {ConfigModule} from "@nestjs/config";
 import {envsSchema} from "./config/env.validation";
 import {PrismaModule} from "./shared/infrastructure/persistence/prisma.module";
 import {TenantModule} from "./modules/tenant/interface/tenant.module";
+import {AuthModule} from "./shared/modules/auth.module";
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import {TenantModule} from "./modules/tenant/interface/tenant.module";
         validationSchema: envsSchema
       }),
       PrismaModule,
+      AuthModule,
       TenantModule,
   ],
   controllers: [],

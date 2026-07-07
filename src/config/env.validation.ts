@@ -6,6 +6,7 @@ interface EnvVars {
     NODE_ENV: string;
     DATABASE_URL: string;
     VERSION: string;
+    ADMIN_SECRET: string;
 }
 
 export const envsSchema = joi.object({
@@ -13,6 +14,7 @@ export const envsSchema = joi.object({
     NODE_ENV: joi.string().valid('production', 'development', 'test').required(),
     DATABASE_URL: joi.string().required(),
     VERSION: joi.string(),
+    ADMIN_SECRET: joi.string(),
 }).unknown(true)
 
 const { error, value } = envsSchema.validate(process.env);
@@ -28,4 +30,5 @@ export const envValidation = {
     nodeEnv: envVars.NODE_ENV,
     databaseUrl: envVars.DATABASE_URL,
     version: envVars.VERSION,
+    adminSecret: envVars.ADMIN_SECRET,
 }

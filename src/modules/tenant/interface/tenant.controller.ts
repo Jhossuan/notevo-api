@@ -1,10 +1,13 @@
-import {Body, Controller, Get, HttpStatus, Param, Post, UseGuards} from "@nestjs/common";
+import {Body, Controller, Get, HttpStatus, Post, Query, UseGuards} from "@nestjs/common";
 import {CreateTenantUseCase} from "../application/use-cases/create-tenant.use-case";
 import {CreateTenantDto} from "./dto/create-tenant.dto";
 import {IControllerResponse} from "../../../shared/interfaces/response.interface";
 import {Tenant} from "../domain/entities/tenant.entity";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {ApiKeyGuard} from "../../../shared/guards/api-key.guard";
+import {FindTenantsUseCase} from "../application/use-cases/find-tenants.use-case";
+import {PaginationDto} from "../../../shared/dto/pagination.dto";
+import {IPagination, IPaginationMetadata} from "../../../shared/interfaces/pagination.interface";
 
 @ApiTags('Tenants')
 @Controller("tenant")
@@ -12,6 +15,7 @@ export class TenantController {
 
     constructor(
         private readonly createTenantUseCase: CreateTenantUseCase,
+        private readonly findTenantsUseCase: FindTenantsUseCase,
     ) {}
 
     @Post()
@@ -31,8 +35,14 @@ export class TenantController {
 
     @UseGuards(ApiKeyGuard)
     @Get()
-    async getTenant(@Param("tenant") tenant: Tenant): Promise<boolean> {
-        return true;
+    async getTenant(@Query() paginationDto: PaginationDto): Promise<IControllerResponse<{ tenants: Tenant[], metadata: IPaginationMetadata }>> {
+        const tenants = await this.findTenantsUseCase.execute(paginationDto as IPagination);
+        return {
+            data: tenants,
+            status: HttpStatus.OK,
+            message: 'Tenant list successfully',
+            success: true,
+        }
     }
 
 }
