@@ -1,7 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {IApiKeyGenerator, IGeneratedApiKey} from "../../application/services/api-key/api-key-generator";
-import { randomBytes } from "node:crypto"
-import * as bcrypt from "bcrypt";
+import { randomBytes, createHash } from "node:crypto"
 
 @Injectable()
 export class CryptoApiKeyGenerator implements IApiKeyGenerator {
@@ -19,11 +18,12 @@ export class CryptoApiKeyGenerator implements IApiKeyGenerator {
     }
 
     async compare(key: string, hash: string): Promise<boolean> {
-        return bcrypt.compare(key, hash);
+        const hashedKey = createHash('sha256').update(key).digest('hex');
+        return hashedKey === hash;
     }
 
     async hash(key: string): Promise<string> {
-        return bcrypt.hash(key, 10)
+        return createHash('sha256').update(key).digest('hex');
     }
 
 }

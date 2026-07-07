@@ -10,6 +10,7 @@ interface ICreateApiKeyProps {
     hashedKey: string;
     prefix: string;
     name: string;
+    tenantId: string;
 }
 
 interface IGetApiKeyProps extends ICreateApiKeyProps {
@@ -28,6 +29,7 @@ export class ApiKey extends BaseEntity {
         public prefix: string,
         public name: string,
         public scope: ApiKeyScope,
+        public tenantId: string,
         public lastUsedAt: Date | null,
         public revokedAt: Date | null,
         createdAt: Date,
@@ -42,6 +44,7 @@ export class ApiKey extends BaseEntity {
             props.prefix,
             props.name,
             ApiKeyScope.FULL_ACCESS,
+            props.tenantId,
             null,
             null,
             new Date()
@@ -55,6 +58,7 @@ export class ApiKey extends BaseEntity {
             props.prefix,
             props.name,
             props.scope,
+            props.tenantId,
             props.lastUsedAt,
             props.revokedAt,
             props.createdAt

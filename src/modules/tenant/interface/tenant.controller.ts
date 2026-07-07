@@ -1,9 +1,10 @@
-import {Body, Controller, HttpStatus, Post} from "@nestjs/common";
+import {Body, Controller, Get, HttpStatus, Param, Post, UseGuards} from "@nestjs/common";
 import {CreateTenantUseCase} from "../application/use-cases/create-tenant.use-case";
 import {CreateTenantDto} from "./dto/create-tenant.dto";
 import {IControllerResponse} from "../../../shared/interfaces/response.interface";
 import {Tenant} from "../domain/entities/tenant.entity";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiKeyGuard} from "../../../shared/guards/api-key.guard";
 
 @ApiTags('Tenants')
 @Controller("tenant")
@@ -26,6 +27,12 @@ export class TenantController {
             message: 'Tenant created successfully',
             success: true,
         }
+    }
+
+    @UseGuards(ApiKeyGuard)
+    @Get()
+    async getTenant(@Param("tenant") tenant: Tenant): Promise<boolean> {
+        return true;
     }
 
 }

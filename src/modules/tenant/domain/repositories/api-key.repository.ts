@@ -5,5 +5,6 @@ export interface IApiKeyRepository {
     create(apiKey: ApiKey, tenantId: string): Promise<ApiKey>;
     findByHashedKey(hashedKey: string): Promise<ApiKey | null>;
     findAllByTenantId(tenantId: string, page: number, limit: number): Promise<{ hashedKeys: ApiKey[], metadata: IPaginationMetadata }>;
+    updateLastUsed(id: string): Promise<void>;
     revoke(id: string): Promise<void>;
 }

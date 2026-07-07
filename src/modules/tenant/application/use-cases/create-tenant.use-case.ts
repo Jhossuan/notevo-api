@@ -31,7 +31,7 @@ export class CreateTenantUseCase {
         const savedTenant = await this.tenantRepository.create(tenant)
 
         const apiKey = await this.apiKeyGenerator.generate();
-        const newApiKey = ApiKey.create({ hashedKey: apiKey.hashed, prefix: apiKey.prefix, name: "Default Key" });
+        const newApiKey = ApiKey.create({ hashedKey: apiKey.hashed, prefix: apiKey.prefix, name: "Default Key", tenantId: savedTenant.id });
         await this.apiKeyRepository.create(newApiKey, savedTenant.id)
 
         return {

@@ -27,6 +27,7 @@ export class PrismaApiKeyRepository implements IApiKeyRepository {
             prefix: newApiKey.prefix,
             name: newApiKey.name,
             scope: EnumApiKeyScope[newApiKey.scope],
+            tenantId: tenantId,
             lastUsedAt: newApiKey.lastUsedAt,
             revokedAt: newApiKey.revokedAt,
             createdAt: newApiKey.createdAt
@@ -46,6 +47,7 @@ export class PrismaApiKeyRepository implements IApiKeyRepository {
             prefix: key.prefix,
             name: key.name,
             scope: EnumApiKeyScope[key.scope],
+            tenantId: key.tenantId,
             lastUsedAt: key.lastUsedAt,
             revokedAt: key.revokedAt,
             createdAt: key.createdAt
@@ -70,6 +72,7 @@ export class PrismaApiKeyRepository implements IApiKeyRepository {
                 prefix: key.prefix,
                 name: key.name,
                 scope: EnumApiKeyScope[key.scope],
+                tenantId: tenantId,
                 lastUsedAt: key.lastUsedAt,
                 revokedAt: key.revokedAt,
                 createdAt: key.createdAt
@@ -80,6 +83,15 @@ export class PrismaApiKeyRepository implements IApiKeyRepository {
                 totalDocuments: totalDocuments
             }
         }
+    }
+
+    async updateLastUsed(id: string): Promise<void> {
+        await this.prisma.apiKey.update({
+            where: { id },
+            data: {
+                lastUsedAt: new Date()
+            }
+        })
     }
 
     async revoke(id: string): Promise<void> {
