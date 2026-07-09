@@ -13,6 +13,9 @@ import {IApiKeyRepository} from "../domain/repositories/api-key.repository";
 import {API_KEY_GENERATOR_TOKEN} from "../application/services/api-key/api-key-generator.tokens";
 import {API_KEY_REPOSITORY_TOKEN} from "../domain/tokens/api-key.token";
 import {FindTenantsUseCase} from "../application/use-cases/find-tenants.use-case";
+import {FindTenantUseCase} from "../application/use-cases/find-tenant.use-case";
+import {UpdateTenantUseCase} from "../application/use-cases/update-tenant.use-case";
+import {DeleteTenantUseCase} from "../application/use-cases/delete-tenant.use-case";
 
 @Module({
     imports: [PrismaModule],
@@ -40,6 +43,27 @@ import {FindTenantsUseCase} from "../application/use-cases/find-tenants.use-case
             useFactory: (
                 tenantRepository: ITenantRepository,
             ) => new FindTenantsUseCase(tenantRepository),
+            inject: [TENANT_REPOSITORY_TOKEN]
+        },
+        {
+            provide: FindTenantUseCase,
+            useFactory: (
+                tenantRepository: ITenantRepository
+            ) => new FindTenantUseCase(tenantRepository),
+            inject: [TENANT_REPOSITORY_TOKEN]
+        },
+        {
+            provide: UpdateTenantUseCase,
+            useFactory: (
+                tenantRepository: ITenantRepository
+            ) => new UpdateTenantUseCase(tenantRepository),
+            inject: [TENANT_REPOSITORY_TOKEN]
+        },
+        {
+            provide: DeleteTenantUseCase,
+            useFactory: (
+                tenantRepository: ITenantRepository
+            ) => new DeleteTenantUseCase(tenantRepository),
             inject: [TENANT_REPOSITORY_TOKEN]
         }
     ],

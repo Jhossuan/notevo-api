@@ -14,7 +14,7 @@ export const envsSchema = joi.object({
     NODE_ENV: joi.string().valid('production', 'development', 'test').required(),
     DATABASE_URL: joi.string().required(),
     VERSION: joi.string(),
-    ADMIN_SECRET: joi.string(),
+    ADMIN_SECRET: joi.string().required(),
 }).unknown(true)
 
 const { error, value } = envsSchema.validate(process.env);

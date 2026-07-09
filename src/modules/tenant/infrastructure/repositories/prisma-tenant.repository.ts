@@ -36,7 +36,6 @@ export class PrismaTenantRepository implements ITenantRepository {
             where: { id: tenant.id, isActive: true },
             data: {
                 name: tenant.name,
-                email: tenant.email,
                 planId: tenant.planId,
             }
         })

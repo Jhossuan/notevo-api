@@ -4,6 +4,7 @@ import {CryptoApiKeyGenerator} from "../../modules/tenant/infrastructure/service
 import {API_KEY_REPOSITORY_TOKEN} from "../../modules/tenant/domain/tokens/api-key.token";
 import {PrismaApiKeyRepository} from "../../modules/tenant/infrastructure/repositories/prisma-api-key.repository";
 import {ApiKeyGuard} from "../guards/api-key.guard";
+import {AdminGuard} from "../guards/admin.guard";
 
 @Global()
 @Module({
@@ -16,12 +17,14 @@ import {ApiKeyGuard} from "../guards/api-key.guard";
             provide: API_KEY_REPOSITORY_TOKEN,
             useClass: PrismaApiKeyRepository
         },
-        ApiKeyGuard
+        ApiKeyGuard,
+        AdminGuard
     ],
     exports: [
         API_KEY_REPOSITORY_TOKEN,
         API_KEY_GENERATOR_TOKEN,
-        ApiKeyGuard
+        ApiKeyGuard,
+        AdminGuard
     ]
 })
 export class AuthModule {}
