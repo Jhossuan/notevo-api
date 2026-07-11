@@ -79,6 +79,7 @@ model Subscriber {
   email        String?
   phone        String?
   metadata     Json?
+  isActive     Boolean        @default(true)
   notification Notification[]
 
   tenant   Tenant @relation(fields: [tenantId], references: [id])

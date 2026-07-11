@@ -4,6 +4,7 @@ import {envsSchema} from "./config/env.validation";
 import {PrismaModule} from "./shared/infrastructure/persistence/prisma.module";
 import {TenantModule} from "./modules/tenant/interface/tenant.module";
 import {AuthModule} from "./shared/modules/auth.module";
+import {SubscriberModule} from "./modules/subscriber/interface/subscriber.module";
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import {AuthModule} from "./shared/modules/auth.module";
       PrismaModule,
       AuthModule,
       TenantModule,
+      SubscriberModule
   ],
   controllers: [],
   providers: [],
