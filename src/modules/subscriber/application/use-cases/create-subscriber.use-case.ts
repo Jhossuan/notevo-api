@@ -12,7 +12,7 @@ interface ICreateSubscriberDto {
 
 export class CreateSubscriberUseCase {
     constructor(
-        public readonly subscriberRepository: ISubscriberRepository,
+        private readonly subscriberRepository: ISubscriberRepository,
     ) {}
 
     async execute(dto: ICreateSubscriberDto, tenantId: string ){
