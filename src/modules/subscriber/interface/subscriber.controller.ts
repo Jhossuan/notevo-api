@@ -1,6 +1,6 @@
 import {Controller, Post, Body, HttpStatus, Get, Query, UseGuards, Param, Patch, Delete} from "@nestjs/common";
 import {CreateSubscriberUseCase} from "../application/use-cases/create-subscriber.use-case";
-import {ApiOperation} from "@nestjs/swagger";
+import {ApiOperation, ApiTags} from "@nestjs/swagger";
 import {TenantId} from "../../../shared/decorators/tenant-id.decorator";
 import {CreateSubscriberDto} from "./dto/create-subscriber.dto";
 import {IControllerResponse} from "../../../shared/interfaces/response.interface";
@@ -15,6 +15,7 @@ import {UpdateSubscriberDto} from "./dto/update-subscriber.dto";
 import {RemoveSubscriberUseCase} from "../application/use-cases/remove-subscriber.use-case";
 
 @Controller('subscriber')
+@ApiTags("Subscribers")
 export class SubscriberController {
 
     constructor(
@@ -75,6 +76,7 @@ export class SubscriberController {
 
     @UseGuards(ApiKeyGuard)
     @Patch(':subscriberId')
+    @ApiOperation({ summary: "Updates subscriber" })
     async update(
         @Body() updateSubscriberDto: UpdateSubscriberDto,
         @Param('subscriberId') subscriberId: string,
@@ -91,6 +93,7 @@ export class SubscriberController {
 
     @UseGuards(ApiKeyGuard)
     @Delete(":subscriberId")
+    @ApiOperation({ summary: "Deletes subscriber" })
     async remove(
         @TenantId() tenantId: string,
         @Param('subscriberId') subscriberId: string
