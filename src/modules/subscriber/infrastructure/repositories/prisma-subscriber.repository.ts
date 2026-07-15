@@ -2,7 +2,9 @@ import {ISubscriberRepository} from "../../domain/repositories/subscriber.reposi
 import {PrismaService} from "../../../../shared/infrastructure/persistence/prisma.service";
 import {Subscriber} from "../../domain/entities/subscriber.entity";
 import {IPaginationMetadata} from "../../../../shared/interfaces/pagination.interface";
+import {Injectable} from "@nestjs/common";
 
+@Injectable()
 export class PrismaSubscriberRepository implements ISubscriberRepository {
 
     constructor(private readonly prisma: PrismaService) {}
@@ -72,9 +74,9 @@ export class PrismaSubscriberRepository implements ISubscriberRepository {
         }
     }
 
-    async findById(id: string): Promise<Subscriber> {
+    async findById(id: string, tenantId: string): Promise<Subscriber> {
         const subscriber = await this.prisma.subscriber.findUnique({
-            where: { id: id },
+            where: { id: id, tenantId },
         })
 
         if(!subscriber) return null;
@@ -123,6 +125,7 @@ export class PrismaSubscriberRepository implements ISubscriberRepository {
         const subscriberUpdated = await this.prisma.subscriber.update({
             where: { id: subscriber.id },
             data: {
+                externalId: subscriber.externalId,
                 firstName: subscriber.firstName,
                 lastName: subscriber.lastName,
                 email: subscriber.email,
