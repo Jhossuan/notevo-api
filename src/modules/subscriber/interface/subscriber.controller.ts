@@ -57,6 +57,7 @@ export class SubscriberController {
         }
     }
 
+    @UseGuards(ApiKeyGuard)
     @Get(':subscriberId')
     @ApiOperation({ summary: "Gets an specific subscriber" })
     async findOne(
@@ -72,6 +73,7 @@ export class SubscriberController {
         }
     }
 
+    @UseGuards(ApiKeyGuard)
     @Patch(':subscriberId')
     async update(
         @Body() updateSubscriberDto: UpdateSubscriberDto,
@@ -87,6 +89,7 @@ export class SubscriberController {
         }
     }
 
+    @UseGuards(ApiKeyGuard)
     @Delete(":subscriberId")
     async remove(
         @TenantId() tenantId: string,
