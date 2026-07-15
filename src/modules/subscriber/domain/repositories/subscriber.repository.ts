@@ -3,7 +3,7 @@ import {IPaginationMetadata} from "../../../../shared/interfaces/pagination.inte
 
 export interface ISubscriberRepository {
     create(subscriber: Subscriber): Promise<Subscriber>;
-    findAll(page: number, limit: number): Promise<{ subscribers: Subscriber[], metadata: IPaginationMetadata }>;
+    findAll(tenantId: string, page: number, limit: number): Promise<{ subscribers: Subscriber[], metadata: IPaginationMetadata }>;
     findById(id: string): Promise<Subscriber | null>;
     findByExternalId(tenantId: string, externalId: string): Promise<Subscriber | null>;
     update(subscriber: Subscriber): Promise<Subscriber>;

@@ -34,12 +34,21 @@ export class PrismaSubscriberRepository implements ISubscriberRepository {
         })
     }
 
-    async findAll(page: number, limit: number): Promise<{ subscribers: Subscriber[], metadata: IPaginationMetadata }> {
-        const totalDocuments = await this.prisma.subscriber.count()
+    async findAll(tenantId: string, page: number, limit: number): Promise<{ subscribers: Subscriber[], metadata: IPaginationMetadata }> {
+        const totalDocuments = await this.prisma.subscriber.count({
+            where: {
+                tenantId: tenantId,
+                isActive: true
+            }
+        })
 
         const subscribers = await this.prisma.subscriber.findMany({
+            where: {
+                tenantId: tenantId,
+                isActive: true
+            },
             skip: (page - 1) * limit,
-            take: (page - 1) * limit,
+            take: limit,
         })
 
         return {
