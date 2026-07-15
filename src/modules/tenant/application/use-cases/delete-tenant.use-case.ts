@@ -15,7 +15,7 @@ export class DeleteTenantUseCase {
             throw new Error(`Tenant with id ${paramTenantId} not found`)
         }
 
-        return await this.tenantRepository.deactivate(paramTenantId);
+        return await this.tenantRepository.deactivate(existingTenant.id);
     }
 
 }
