@@ -12,6 +12,7 @@ export class PrismaSubscriberRepository implements ISubscriberRepository {
     async create(subscriber: Subscriber): Promise<Subscriber> {
         const newSubscriber = await this.prisma.subscriber.create({
             data: {
+                id: subscriber.id,
                 tenantId: subscriber.tenantId,
                 externalId: subscriber.externalId,
                 firstName: subscriber.firstName,

@@ -12,6 +12,7 @@ export class PrismaTenantRepository implements ITenantRepository {
     async create(tenant: Tenant):Promise<Tenant> {
         const newTenant = await this.prisma.tenant.create({
             data: {
+                id: tenant.id,
                 name: tenant.name,
                 email: tenant.email,
                 password: tenant.password,

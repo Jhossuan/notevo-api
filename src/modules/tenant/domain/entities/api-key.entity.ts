@@ -2,8 +2,8 @@ import {BaseEntity} from "../../../../shared/domain/base.entity";
 import {v4 as uuidv4} from "uuid"
 
 export enum ApiKeyScope {
-    FULL_ACCESS,
-    READ_ONLY
+    FULL_ACCESS = "FULL_ACCESS",
+    READ_ONLY = "READ_ONLY",
 }
 
 interface ICreateApiKeyProps {
