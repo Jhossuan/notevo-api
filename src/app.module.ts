@@ -5,6 +5,7 @@ import {PrismaModule} from "./shared/infrastructure/persistence/prisma.module";
 import {TenantModule} from "./modules/tenant/interface/tenant.module";
 import {AuthModule} from "./shared/modules/auth.module";
 import {SubscriberModule} from "./modules/subscriber/interface/subscriber.module";
+import {TemplateModule} from "./modules/template/interface/template.module";
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import {SubscriberModule} from "./modules/subscriber/interface/subscriber.module
       PrismaModule,
       AuthModule,
       TenantModule,
-      SubscriberModule
+      SubscriberModule,
+      TemplateModule
   ],
   controllers: [],
   providers: [],
